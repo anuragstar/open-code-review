@@ -1,0 +1,59 @@
+plugins/open-code-review/opencode/open-code-review.ts
+  s_148b41b41e3671::t_e8f7dc5e33c1ab 512
+  s_148b41b41e3671::t_ef4a1b16d33505 22,117,346-347
+  s_148b41b41e3671::t_4cccfdddfad1f9 348
+cmd/opencodereview/review_cmd.go
+  s_148b41b41e3671::t_7689a886d940a8 44,155-159,416
+  s_148b41b41e3671::t_b76ff12cb71d87 409-415,417-418
+  s_148b41b41e3671::t_a35c34eb31d0d2 43,160
+  s_148b41b41e3671::t_b05edee3761d45 232
+cmd/opencodereview/custom_skill_file.go
+  s_148b41b41e3671::t_3ad5f548c3551f 1-7,9-16,18-43,47,50,52-53,62-64
+  s_148b41b41e3671::t_f84ac181cc2f8e 44-46,48-49,56,60-61
+  s_148b41b41e3671::t_9aaed36db29949 17
+  s_148b41b41e3671::t_616bba3260a373 8,51,54-55,57-59
+plugins/open-code-review/opencode/test/open-code-review.test.mjs
+  s_148b41b41e3671::t_74bb6e2a897b1f 853-866,910
+  s_148b41b41e3671::t_0e0af8447784e5 852,867-868
+internal/agent/manifest_hash_test.go
+  s_148b41b41e3671::t_4565473c7e3c43 85-92
+internal/config/template/prompts/plan_task_user.md
+  s_148b41b41e3671::t_b038e4280d491d 13-15
+pages/src/content/docs/en/cli-reference.md
+  s_148b41b41e3671::t_7b589849b0b2c3 125
+  s_148b41b41e3671::t_1da0ee132564cc 32
+internal/agent/agent.go
+  s_148b41b41e3671::t_6287e8d2a61c48 1322,1766
+  s_148b41b41e3671::t_ecd54f3c3d98a3 117-121,1078-1079
+  s_148b41b41e3671::t_01773db8c45374 1080
+cmd/opencodereview/custom_skill_file_test.go
+  s_148b41b41e3671::t_fc8822db1ce3e5 50
+  s_148b41b41e3671::t_783f67780d3f74 44-46,48-49,51-53
+  s_148b41b41e3671::t_53925c09481132 1-28,30,32-43
+  s_148b41b41e3671::t_97f4d93c8d9412 29,31
+  s_148b41b41e3671::t_e1a3c8ea6c8436 47
+internal/config/template/prompts/main_task_user.md
+  s_148b41b41e3671::t_c63b2f1bf7ae49 16-18
+cmd/opencodereview/flags_test.go
+  s_148b41b41e3671::t_1d1c61e4a8cb06 27-36
+cmd/opencodereview/shared_flags.go
+  s_148b41b41e3671::t_c69e0094a62c18 216
+internal/agent/agent_test.go
+  s_148b41b41e3671::t_aae479fded63a2 65-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "e82136d3a58bb96addbbc986b24abcdb789a44ac",
+  "prompts": {},
+  "sessions": {
+    "s_148b41b41e3671": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a126e5-e33c-7f62-8075-8f9b31427233",
+        "model": "gpt-6-luna"
+      },
+      "human_author": "Anurag Sinha <anurag.sinha@hotstar.com>"
+    }
+  }
+}
