@@ -62,6 +62,28 @@ func agentTaskDoneResponse() *llm.ChatResponse {
 	}
 }
 
+func TestBuildMainTaskMessagesIncludesCustomSkillSeparately(t *testing.T) {
+	skill := "<ocr_custom_skill>\nCheck PII coverage.\n</ocr_custom_skill>"
+	a := New(Args{
+		Background:  "business context",
+		CustomSkill: skill,
+		Template: template.Template{MainTask: template.LlmConversation{Messages: []template.ChatMessage{{
+			Role: "user", Content: "Background={{requirement_background}}\nSkill={{custom_skill}}",
+		}}}},
+	})
+	messages := a.buildMainTaskMessages("", "", "", "", "")
+	if len(messages) != 1 {
+		t.Fatalf("messages = %d, want 1", len(messages))
+	}
+	content, ok := messages[0].Content.(string)
+	if !ok {
+		t.Fatalf("message content has type %T, want string", messages[0].Content)
+	}
+	if !strings.Contains(content, "Background=business context") || !strings.Contains(content, "Skill="+skill) {
+		t.Fatalf("custom skill was not rendered separately: %q", content)
+	}
+}
+
 func codeCommentResponse(path string) *llm.ChatResponse {
 	content := ""
 	args := map[string]any{

@@ -29,6 +29,7 @@ Examples:
   ocr review --commit abc123               Review a single commit
   ocr review --background "Focus on auth"                                           Review with inline context
   ocr review -B ./docs/requirements.md                                              Review with context file
+  ocr review --custom-skill-file ./review-skills/pii.md                             Apply custom review instructions
   ocr config provider                      Interactive provider setup
   ocr config model                         Interactive model selection
   ocr config set llm.model opus-4-6        Set a config value
@@ -121,6 +122,7 @@ staged + unstaged + untracked changes in the current directory's repo.
 | `--audience <who>` | — | `human` | `human` streams progress lines (to stderr when `--format` is `json`/`sarif`, so stdout stays a single parseable document); `agent` suppresses progress entirely and prints only the final summary / JSON. |
 | `--background <text>` | `-b` | — | Optional requirement / business context injected into the plan + main prompts. |
 | `--background-file <path>` | `-B` | — | Path to a Markdown file used as review background. Takes precedence over `--background` when both are set. |
+| `--custom-skill-file <path>` | — | — | Markdown instructions to apply during review (for example, PII checks and test coverage requirements). Relative paths resolve from the repository root; maximum content is 12,000 characters (48 KB UTF-8). Resuming a run requires the same skill file content. |
 | `--exclude <patterns>` | — | — | Comma-separated gitignore-style patterns to exclude; merged with the `excludes` section of `rule.json` |
 | `--concurrency <n>` | — | `8` | Maximum number of subtasks reviewed in parallel. |
 | `--timeout <minutes>` | — | `15` | Per-subtask budget, including LLM calls, tools, and retry waits. `0` disables the task deadline, not request timeouts. Independent request timeout: `OCR_LLM_TIMEOUT` or provider `timeout_sec`, in seconds (default `300`). Scaled linearly by the number of effort review rounds (e.g. 15/30/45 min for low/medium/high). |

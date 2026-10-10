@@ -114,6 +114,11 @@ type Args struct {
 	// injected into plan and main_task prompts via {{requirement_background}}.
 	Background string
 
+	// CustomSkill is the optional, delimited custom review instruction block.
+	// It participates in resume identity so checkpoints cannot be reused with a
+	// different or omitted custom skill.
+	CustomSkill string
+
 	// Model is the resolved model name used by every LLM request this run
 	// makes. The template carries no per-phase model override, so plan,
 	// main_task, memory compression, re-location and review filter all send
@@ -1070,6 +1075,9 @@ func (a *Agent) ruleConfigSHA256() string {
 			fields = append(fields, "exclude", exc)
 		}
 	}
+	if a.args.CustomSkill != "" {
+		fields = append(fields, "custom_skill", a.args.CustomSkill)
+	}
 	return hashFields(fields...)
 }
 
@@ -1311,6 +1319,7 @@ func (a *Agent) buildMainTaskMessages(rule, changeFiles, diffs, planResult, conf
 		content = strings.ReplaceAll(content, "{{change_files}}", changeFiles)
 		content = strings.ReplaceAll(content, "{{diffs}}", diffs)
 		content = strings.ReplaceAll(content, "{{requirement_background}}", a.args.Background)
+		content = strings.ReplaceAll(content, "{{custom_skill}}", a.args.CustomSkill)
 		if planResult == "" {
 			content = stripEmptyPlanBlock(content)
 		}
@@ -1754,6 +1763,7 @@ func (a *Agent) executeGroupPlanPhase(ctx context.Context, g FileGroup, concaten
 		content = strings.ReplaceAll(content, "{{change_files}}", changeFiles)
 		content = strings.ReplaceAll(content, "{{diffs}}", concatenatedDiffs)
 		content = strings.ReplaceAll(content, "{{requirement_background}}", a.args.Background)
+		content = strings.ReplaceAll(content, "{{custom_skill}}", a.args.CustomSkill)
 		content = strings.ReplaceAll(content, "{{plan_tools}}", formatToolDefs(a.args.PlanToolDefs))
 		messages = append(messages, llm.NewTextMessage(m.Role, content))
 	}

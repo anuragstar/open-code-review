@@ -82,6 +82,14 @@ func TestRuleConfigSHA256_NilResolverAndFilter(t *testing.T) {
 	if got := a.ruleConfigSHA256(); got != emptySHA256() {
 		t.Errorf("empty rule config = %q, want empty-input digest %q", got, emptySHA256())
 	}
+	withSkill := New(Args{CustomSkill: "<ocr_custom_skill>Check PII.</ocr_custom_skill>"})
+	if got := withSkill.ruleConfigSHA256(); got == emptySHA256() {
+		t.Error("custom skill did not participate in rule_config_sha256")
+	}
+	changedSkill := New(Args{CustomSkill: "<ocr_custom_skill>Check secrets.</ocr_custom_skill>"})
+	if withSkill.ruleConfigSHA256() == changedSkill.ruleConfigSHA256() {
+		t.Error("changing the custom skill did not change rule_config_sha256")
+	}
 }
 
 func TestSourceArtifactSHA256_DedupsByItemID(t *testing.T) {

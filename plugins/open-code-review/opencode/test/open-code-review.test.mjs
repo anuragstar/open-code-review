@@ -849,6 +849,23 @@ test("ocr_review forwards backgroundFile as --background-file", async () => {
   )
 })
 
+test("ocr_review forwards customSkillFile as --custom-skill-file", async () => {
+  await withFakeOcr(
+    "console.log(JSON.stringify({status:'success', argv:process.argv.slice(2)}))",
+    async (worktree) => {
+      const { hooks } = await loadPlugin(worktree)
+      const output = await hooks.tool.ocr_review.execute(
+        { customSkillFile: "review-skills/pii/SKILL.md" },
+        toolContext(worktree),
+      )
+      assert.deepEqual(JSON.parse(output).argv, [
+        "review", "--audience", "agent", "--format", "json", "--repo", worktree,
+        "--custom-skill-file", "review-skills/pii/SKILL.md",
+      ])
+    },
+  )
+})
+
 test("ocr_review rejects background combined with backgroundFile", async () => {
   await withTemporaryDirectory(async (worktree) => {
     const { hooks } = await loadPlugin(worktree)
@@ -890,4 +907,5 @@ test("v2 exposes backgroundFile in the tool input schema", async () => {
   // even though buildReviewArgs would forward it.
   assert.equal(review.input.additionalProperties, false)
   assert.equal(review.input.properties.backgroundFile?.type, "string")
+  assert.equal(review.input.properties.customSkillFile?.type, "string")
 })

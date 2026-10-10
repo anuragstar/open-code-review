@@ -24,6 +24,16 @@ func TestParseReviewFlagsBackgroundFile(t *testing.T) {
 	}
 }
 
+func TestParseReviewFlagsCustomSkillFile(t *testing.T) {
+	opts, err := parseReviewFlags([]string{"--custom-skill-file", "./review-skills/pii.md"})
+	if err != nil {
+		t.Fatalf("parseReviewFlags: %v", err)
+	}
+	if opts.customSkillFile != "./review-skills/pii.md" {
+		t.Errorf("customSkillFile = %q, want %q", opts.customSkillFile, "./review-skills/pii.md")
+	}
+}
+
 func TestParseReviewFlagsModelOverride(t *testing.T) {
 	opts, err := parseReviewFlags([]string{"--model", "claude-opus-4-6"})
 	if err != nil {

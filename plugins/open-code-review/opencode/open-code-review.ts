@@ -19,6 +19,7 @@ interface ReviewInput {
   resume?: string
   background?: string
   backgroundFile?: string
+  customSkillFile?: string
   exclude?: string
   model?: string
   concurrency?: number
@@ -113,6 +114,7 @@ function buildReviewArgs(input: ReviewInput, repo: string, backgroundFile?: stri
     pushValue(args, "--background-file", input.backgroundFile)
   }
   pushValue(args, "--exclude", input.exclude)
+  pushValue(args, "--custom-skill-file", input.customSkillFile)
   pushValue(args, "--model", input.model)
   pushValue(args, "--concurrency", input.concurrency)
   pushValue(args, "--timeout", input.timeoutMinutes)
@@ -341,6 +343,9 @@ const reviewArgs = {
       "A relative path resolves against the repository root; an absolute path is used as given. " +
       "Cannot be combined with 'background'.",
   ),
+  customSkillFile: optionalString(
+    "Path to a Markdown file with additional custom review instructions, such as domain checks or test coverage requirements. Relative paths resolve from the repository root.",
+  ),
   exclude: optionalString("Comma-separated gitignore-style exclusion patterns."),
   model: optionalString("Override the model configured in OpenCodeReview."),
   concurrency: optionalPositiveInt("Maximum concurrent file reviews."),
@@ -504,6 +509,7 @@ const reviewInputSchema = {
     resume: { type: "string", description: "Resume a previous OCR review session by ID." },
     background: { type: "string", description: "Business or requirement context that the implementation should satisfy." },
     backgroundFile: { type: "string", description: "Path to a Markdown file holding the review background, for context too long to pass inline. A relative path resolves against the repository root; an absolute path is used as given. Cannot be combined with 'background'." },
+    customSkillFile: { type: "string", description: "Path to a Markdown file with additional custom review instructions, such as domain checks or test coverage requirements. Relative paths resolve from the repository root." },
     exclude: { type: "string", description: "Comma-separated gitignore-style exclusion patterns." },
     model: { type: "string", description: "Override the model configured in OpenCodeReview." },
     concurrency: { type: "integer", minimum: 1, description: "Maximum concurrent file reviews." },

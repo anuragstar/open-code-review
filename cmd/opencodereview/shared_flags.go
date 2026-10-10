@@ -213,6 +213,7 @@ func registerReviewFlags(cmd *cobra.Command, opts *reviewOptions) {
 	addOutputPathFlag(cmd, &opts.outputPath)
 	addConcurrencyFlags(cmd, &opts.concurrency, &opts.concurrentTaskTimeout, &opts.maxTools, &opts.maxGitProcs, &opts.maxTokens, &opts.maxTokensBudget)
 	addBackgroundFlags(cmd, &opts.background, &opts.backgroundFile)
+	cmd.Flags().StringVar(&opts.customSkillFile, "custom-skill-file", "", "path to a Markdown file with additional custom review instructions (resolved from the repository root)")
 	addProviderFlag(cmd, &opts.provider)
 	addModelFlag(cmd, &opts.model)
 	cmd.Flags().StringVar(&opts.effort, "effort", "", "review effort preset: low | medium | high (\"\" = configured or default medium)")

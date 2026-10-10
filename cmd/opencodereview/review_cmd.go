@@ -40,6 +40,8 @@ type reviewOptions struct {
 	outputPath            string
 	background            string
 	backgroundFile        string
+	customSkillFile       string
+	customSkill           string
 	provider              string
 	model                 string
 	concurrency           int
@@ -150,6 +152,12 @@ func executeReviewContext(ctx context.Context, opts reviewOptions) (retErr error
 		return err
 	}
 	opts.background = bg
+	if opts.customSkillFile != "" {
+		opts.customSkill, err = loadCustomSkillFile(resolveBackgroundFilePath(cc.RepoDir, opts.customSkillFile))
+		if err != nil {
+			return err
+		}
+	}
 
 	if opts.preview {
 		return runPreviewContext(ctx, cc, opts, out)
@@ -221,6 +229,7 @@ func executeReviewContext(ctx context.Context, opts reviewOptions) (retErr error
 		ReviewMode:            reviewModeFromOptions(opts),
 		Template:              *cc.Template,
 		SystemRule:            cc.Resolver,
+		CustomSkill:           opts.customSkill,
 		FileFilter:            cc.FileFilter,
 		LLMClient:             rt.Client,
 		Tools:                 tools,
@@ -397,15 +406,16 @@ func validateResumeIdentity(ctx context.Context, cc *commonContext, opts reviewO
 		return nil, nil
 	}
 	sealed, err := agent.ResolveIdentity(ctx, agent.Args{
-		RepoDir:    cc.RepoDir,
-		From:       opts.from,
-		To:         opts.to,
-		Commit:     opts.commit,
-		ReviewMode: reviewModeFromOptions(opts),
-		Template:   *cc.Template,
-		SystemRule: cc.Resolver,
-		FileFilter: cc.FileFilter,
-		GitRunner:  cc.GitRunner,
+		RepoDir:     cc.RepoDir,
+		From:        opts.from,
+		To:          opts.to,
+		Commit:      opts.commit,
+		ReviewMode:  reviewModeFromOptions(opts),
+		Template:    *cc.Template,
+		SystemRule:  cc.Resolver,
+		CustomSkill: opts.customSkill,
+		FileFilter:  cc.FileFilter,
+		GitRunner:   cc.GitRunner,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("resolve current input identity: %w", err)
